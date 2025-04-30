@@ -7,12 +7,15 @@ import PyPDF2
 from vertexai import generative_models
 import vertexai
 
+# Load credentials from Streamlit secrets
+credentials_dict = st.secrets["gcp"]
+credentials = service_account.Credentials.from_service_account_info(dict(credentials_dict))
 
 # --- Google Vertex AI Init ---
-PROJECT_ID = "projectrag-458404"
+PROJECT_ID = credentials_dict["projectrag-458404"]
 REGION = "us-central1" 
+vertexai.init(project=PROJECT_ID, location=REGION, credentials=credentials)
 
-vertexai.init(project=PROJECT_ID, location=REGION)
 # model = generative_models.GenerativeModel("gemini-1.0-pro")
 model = generative_models.GenerativeModel("gemini-2.5-pro-preview-03-25")	
 
