@@ -5,14 +5,15 @@ import tempfile
 import PyPDF2
 
 from vertexai import generative_models
+from google.oauth2 import service_account
 import vertexai
 
 # Load credentials from Streamlit secrets
-credentials_dict = st.secrets["gcp"]
-credentials = service_account.Credentials.from_service_account_info(dict(credentials_dict))
+credentials = service_account.Credentials.from_service_account_info(st.secrets["gcp"])
+
 
 # --- Google Vertex AI Init ---
-PROJECT_ID = credentials_dict["projectrag-458404"]
+PROJECT_ID = credentials.project_id
 REGION = "us-central1" 
 vertexai.init(project=PROJECT_ID, location=REGION, credentials=credentials)
 
@@ -65,3 +66,4 @@ if uploaded_file:
             answer = generate_answer(prompt)
         st.subheader("🧠 Response")
         st.write(answer)
+
